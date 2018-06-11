@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--静态正则表达式方法匹配切面配置文件-->
+
+    <bean id="greetingAdvice" class="com.edu.lnu.advisor.GreetingBeforeAdvice"/>
+
+    <bean id="waiterTarget" class="com.edu.lnu.advisor.Waiter"/>
+
+    <bean id="regexAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor"
+        p:advice-ref="greetingAdvice">
+        <property name="patterns">
+            <list>
+                <value>.*greet.*</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:interceptorNames="regexAdvisor"
+          p:target-ref="waiterTarget"
+          p:proxyTargetClass="true"/>
+
+</beans>

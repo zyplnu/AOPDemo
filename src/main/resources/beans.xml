@@ -16,10 +16,42 @@
 
     <bean id="target" class="com.edu.lnu.aop.NativeWaiter"/>
 
+    <!--定义异常抛出增强-->
+    <bean id="transactionManager" class="com.edu.lnu.advice.TransactionManager"/>
 
-    <bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean"
+    <bean id="forumServiceTarget" class="com.edu.lnu.service.serviceImpl.ForumServiceImpl2"/>
+
+    <!--定义引介增强-->
+    <bean id="pmonitor" class="com.edu.lnu.advice.ControllablePerformanceMonitor"/>
+
+    <!--p:interceptorNames="transactionManager"-->
+    <!--<bean id="forumService" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:interfaces="com.edu.lnu.advice.Monitorable"
+          p:target-ref="forumServiceTarget"
+          p:interceptorNames="pmonitor"
+          p:proxyTargetClass="true"/>-->
+
+    <!--<bean id="waiter" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:proxyInterfaces="com.edu.lnu.aop.Waiter"
           p:interceptorNames="greetingAround"
-          p:target-ref="target"/>
+          p:target-ref="target"/>-->
+
+    <bean id="waiterTarget" class="com.edu.lnu.advisor.Waiter"/>
+
+    <bean id="sellerTarget" class="com.edu.lnu.advisor.Seller"/>
+
+    <bean id="greetingAdvice" class="com.edu.lnu.advisor.GreetingBeforeAdvice"/>
+
+    <bean id="greetingAdvisor" class="com.edu.lnu.advisor.GreetingAdvisor"
+          p:advice-ref="greetingAdvice"/>
+
+    <bean id="parent" abstract="true"
+          class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:interceptorNames="greetingAdvisor"
+          p:proxyTargetClass="true"/>
+
+    <bean id="waiter" parent="parent" p:target-ref="waiterTarget"/>
+
+    <bean id="seller" parent="parent" p:target-ref="sellerTarget"/>
 
 </beans>
