@@ -2,6 +2,7 @@ package com.edu.lnu.test;
 
 import com.edu.lnu.advisor.Seller;
 import com.edu.lnu.advisor.Waiter;
+import org.springframework.aop.Pointcut;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
@@ -22,6 +23,7 @@ public class AdvisorTest {
         waiter.greetTo("John");
         waiter.serveTo("John");
 //        seller.greetTo("John");
+
     }
 
 }
